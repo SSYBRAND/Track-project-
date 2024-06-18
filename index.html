@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Project - Client Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .tracking-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+        .track-button {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .track-button:hover {
+            background-color: #0b7dda;
+        }
+        .result-container {
+            margin-top: 20px;
+            display: none; /* Initially hide the result container */
+            text-align: left;
+        }
+        .project-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        .project-item:last-child {
+            margin-bottom: 0;
+        }
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .progress-bar {
+            background-color: #2196f3;
+            height: 20px;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            background-color: #4caf50;
+            height: 100%;
+        }
+        .percent-text {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tracking-container">
+        <h2>Track Your Project<br><font color=red>"Sattu technologies"</font> 💥</h2>
+        <div class="input-container">
+            <input type="text" id="awbNumber" class="input-field" placeholder="Enter AWB Number">
+            <button class="track-button" onclick="trackProject()">Track</button>
+        </div>
+        <div class="result-container" id="trackingResult">
+            <!-- Tracking information will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // Simulated data for multiple customers
+        var projects = [
+            {
+                awb: '7860571397',
+                clientName: 'John Doe',
+                paidAmount: '5000 USD',
+                orderProducts: ['Website Design', 'E-commerce Integration'],
+                websiteCategory: 'E-commerce',
+                deliveryDate: 'July 15, 2024',
+                details: [
+                    { title: 'Homepage Design', progress: 90 },
+                    { title: 'Body', progress: 70 },
+                    { title: 'Footer', progress: 50 }
+                ]
+            },
+            {
+                awb: '9559903910',
+                clientName: 'Jane Smith',
+                paidAmount: '7000 USD',
+                orderProducts: ['Custom Application Development'],
+                websiteCategory: 'Custom Application',
+                deliveryDate: 'July 20, 2024',
+                details: [
+                    { title: 'Custom Application Design', progress: 80 },
+                    { title: 'Backend Development', progress: 60 }
+                ]
+            }
+            // Add more customer data as needed
+        ];
+
+        function trackProject() {
+            var awbNumber = document.getElementById('awbNumber').value.trim();
+
+            // Find the project details based on the entered AWB number
+            var project = projects.find(function(proj) {
+                return proj.awb === awbNumber;
+            });
+
+            // If project with AWB number is found
+            if (project) {
+                var resultContainer = document.getElementById('trackingResult');
+                resultContainer.style.display = 'block'; // Show the result container
+                resultContainer.innerHTML = `<h3>Project Details</h3>`;
+
+                // Display client information
+                resultContainer.innerHTML += `
+                    <div class="project-item">
+                        <div class="item-title">Client Name</div>
+                        <div class="percent-text">${project.clientName}</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">Paid Amount</div>
+                        <div class="percent-text">${project.paidAmount}</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">Order Products</div>
+                        <div class="percent-text">${project.orderProducts.join(', ')}</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">Website Category</div>
+                        <div class="percent-text">${project.websiteCategory}</div>
+                    </div>
+                `;
+
+                // Display project details
+                resultContainer.innerHTML += `<h3>Project Progress</h3>`;
+                project.details.forEach(function(item) {
+                    var progressBarStyle = `width: ${item.progress}%;`;
+                    resultContainer.innerHTML += `
+                        <div class="project-item">
+                            <div class="item-title">${item.title}</div>
+                            <div class="progress-bar">
+                                <div class="progress" style="${progressBarStyle}"></div>
+                            </div>
+                            <div class="percent-text">${item.progress}% complete</div>
+                        </div>
+                    `;
+                });
+
+                // Display expected delivery date
+                resultContainer.innerHTML += `
+                    <div class="project-item">
+                        <div class="item-title">Expected Delivery Date</div>
+                        <div class="percent-text">${project.deliveryDate}</div>
+                    </div>
+                `;
+            } else {
+                alert('Invalid AWB number. Please enter the correct AWB number.');
+            }
+        }
+    </script>
+</body>
+</html>
